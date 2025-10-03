@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>konf.dev - Intelligent Agent Orchestration</title>
+    <meta name="description" content="Build, orchestrate, and deploy powerful multi-agent AI systems with ease. konf.dev simplifies complex agent workflows and memory management.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #000;
+            --secondary-color: #333;
+            --accent-color: #555; /* A slightly softer black for subtle elements */
+            --background-color: #fff;
+            --text-color: #333;
+            --light-text-color: #666;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        header {
+            background-color: var(--background-color);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            max-width: 150px; /* Adjust logo size */
+            height: auto;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: var(--light-text-color);
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 60px 0;
+            background-color: var(--background-color);
+        }
+
+        .key-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 40px 0;
+        }
+
+        .feature-card {
+            background-color: #f9f9f9; /* Off-white for cards */
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 25px;
+            max-width: 300px;
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 1em;
+            color: var(--light-text-color);
+            margin-bottom: 0;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 60px 0;
+            background-color: var(--background-color);
+            border-top: 1px solid #eee;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: auto;
+            border-top: 1px solid #eee;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            .feature-card {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="https://raw.githubusercontent.com/your-username/your-repo/main/logo.png" alt="konf.dev Logo">
+            </div>
+            <h1>konf.dev</h1>
+            <p>Simplifying the future of intelligent agent systems.</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <h2>Build, Orchestrate, and Deploy Multi-Agent AI with Ease.</h2>
+                <p>
+                    konf.dev is crafting a platform to empower developers to design, connect, and manage sophisticated AI agents without wrestling with complex infrastructure. Imagine creating powerful AI workflows as intuitively as you build a flowchart.
+                </p>
+            </div>
+        </section>
+
+        <section class="key-features">
+            <div class="container">
+                <h2>What we're building:</h2>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
+                    <div class="feature-card">
+                        <h3>Declarative Agent Workflows (Sutra)</h3>
+                        <p>Define your agents' logic and interactions using simple, powerful configurations. Focus on *what* your agents should do, not *how* to wire everything up.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Intelligent Memory Management (Smrti)</h3>
+                        <p>Equip your agents with contextual awareness. A robust memory layer ensures your AI systems learn, remember, and adapt over time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Intuitive Orchestration (Upcoming UI)</h3>
+                        <p>Visually design and deploy intricate multi-agent systems with a user-friendly interface, inspired by the simplicity of tools like n8n, but built for AI.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2>Join us in shaping the future of AI.</h2>
+                <p>
+                    We're in the early stages and eager to connect with developers, researchers, and pioneers who share our vision. Your insights can help us build exactly what the community needs.
+                </p>
+                <a href="mailto:hello@konf.dev?subject=Konf.dev Inquiry" class="cta-button">Get in Touch</a>
+                </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> konf.dev. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
