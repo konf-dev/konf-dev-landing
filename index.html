@@ -1,211 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>konf.dev - Intelligent Agent Orchestration</title>
-    <meta name="description" content="Build, orchestrate, and deploy powerful multi-agent AI systems with ease. konf.dev simplifies complex agent workflows and memory management.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>konf.dev — Agent orchestration infrastructure</title>
+    <meta name="description" content="Platform infrastructure for building declarative agent workflows, stateful memory systems, and tool orchestration. Built for production multi-agent systems.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo-crop.png">
     <style>
-        :root {
-            --primary-color: #000;
-            --secondary-color: #333;
-            --accent-color: #555; /* A slightly softer black for subtle elements */
-            --background-color: #fff;
-            --text-color: #333;
-            --light-text-color: #666;
+        :root{
+            --bg: #ffffff;
+            --bg-soft: #f8f9fb;
+            --text: #0f1720;
+            --muted: #6b7280;
+            --accent: #0f1720;
+            --border: #e6e9ee;
+            --gap: 1rem;
+            --container: 1100px;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+        *{box-sizing: border-box}
+        html,body{height:100%}
+        body{
+            margin:0;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial;
+            color:var(--text);
+            background:var(--bg);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            line-height:1.5;
         }
 
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 20px;
-            flex-grow: 1;
-        }
+        .wrap{max-width:var(--container);margin:0 auto;padding:0 1.25rem}
 
-        header {
-            background-color: var(--background-color);
-            padding: 40px 0;
-            text-align: center;
-        }
+        header{padding:2.25rem 0;border-bottom:1px solid var(--border);background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent)}
+        .brand{display:flex;align-items:center;gap:1rem}
+    .logo{width:auto;height:auto;flex:0 0 auto;display:inline-block}
+    .logo-main{height:192px;width:auto;display:block}
+    .brand{display:flex;align-items:center;gap:1.25rem}
+        .brand h1{font-size:1.25rem;margin:0;font-weight:600}
+    /* accessibility utility */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+        .lead{margin-top:0.5rem;color:var(--muted);max-width:68ch;font-size:1rem}
 
-        .logo {
-            margin-bottom: 20px;
-        }
+        main{padding:2.5rem 0}
+    /* hero */
+    .hero{display:flex;align-items:center;gap:2rem;padding:1.5rem 0}
+    .hero-left{flex:1}
+    .hero-right{flex:0 0 360px;text-align:center}
+    .hero h1{font-size:1.8rem;margin:0 0 .5rem 0}
+    .hero p{color:var(--muted);margin:0 0 1rem}
+    .visual-card{background:#fff;border:1px solid var(--border);padding:1rem;border-radius:10px;display:inline-block}
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem}
+        .card{background:var(--bg-soft);border:1px solid var(--border);padding:1.15rem;border-radius:8px}
+        .card h3{margin:0 0 .5rem 0;font-size:1rem}
+        .card p{margin:0;color:var(--muted);font-size:.95rem}
+        .code{display:inline-block;margin-top:.6rem;padding:.25rem .5rem;background:#fff;border:1px solid var(--border);border-radius:6px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;font-size:.875rem;color:var(--text)}
+        .badges{margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.5rem}
+        .badge{padding:.28rem .6rem;border-radius:999px;background:#fff;border:1px solid var(--border);font-size:.82rem;color:var(--muted)}
 
-        .logo img {
-            max-width: 150px; /* Adjust logo size */
-            height: auto;
-        }
+        .status{margin-top:1rem;padding:1rem;border-radius:8px;background:#fff;border:1px solid var(--border)}
+        .status ul{margin:0;padding-left:1.25rem;color:var(--muted)}
 
-        h1 {
-            font-size: 3em;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
+        h2{font-size:1.05rem;margin:0 0 .85rem 0}
+        hr.sep{border:0;height:1px;background:var(--border);margin:2.25rem 0}
 
-        p {
-            font-size: 1.1em;
-            margin-bottom: 20px;
-            color: var(--light-text-color);
-        }
+        .contact{padding:1.5rem 0;text-align:center}
+        .contact p{color:var(--muted);max-width:64ch;margin:0 auto 1rem}
+        .btn{display:inline-block;padding:.65rem 1rem;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600}
 
-        .hero-section {
-            text-align: center;
-            padding: 60px 0;
-            background-color: var(--background-color);
-        }
+        footer{border-top:1px solid var(--border);padding:1rem 0;text-align:center;color:var(--muted);font-size:.88rem}
 
-        .key-features {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            padding: 40px 0;
-        }
-
-        .feature-card {
-            background-color: #f9f9f9; /* Off-white for cards */
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 25px;
-            max-width: 300px;
-            text-align: left;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-card h3 {
-            color: var(--primary-color);
-            margin-top: 0;
-            font-size: 1.4em;
-            margin-bottom: 10px;
-        }
-
-        .feature-card p {
-            font-size: 1em;
-            color: var(--light-text-color);
-            margin-bottom: 0;
-        }
-
-        .cta-section {
-            text-align: center;
-            padding: 60px 0;
-            background-color: var(--background-color);
-            border-top: 1px solid #eee;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            padding: 15px 30px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1em;
-            transition: background-color 0.3s ease;
-        }
-
-        .cta-button:hover {
-            background-color: var(--secondary-color);
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: auto;
-            border-top: 1px solid #eee;
-            color: var(--light-text-color);
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5em;
-            }
-            .feature-card {
-                max-width: 90%;
-            }
+        @media (max-width:720px){
+            .brand{gap:.6rem}
+            .logo-main{height:144px}
+            .lead{font-size:.98rem}
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="logo">
-                <img src="https://raw.githubusercontent.com/your-username/your-repo/main/logo.png" alt="konf.dev Logo">
+        <div class="wrap">
+            <div class="brand" role="banner">
+                <a href="/" class="logo" aria-label="konf.dev home">
+                    <img src="logo.png" alt="konf.dev" class="logo-main">
+                </a>
+                <div>
+                    <h1 class="sr-only">konf.dev</h1>
+                    <p class="lead">konf.dev provides a platform to build and operate declarative agent workflows, stateful memory systems, and robust tool orchestration — built for production.</p>
+                </div>
             </div>
-            <h1>konf.dev</h1>
-            <p>Simplifying the future of intelligent agent systems.</p>
         </div>
     </header>
 
     <main>
-        <section class="hero-section">
-            <div class="container">
-                <h2>Build, Orchestrate, and Deploy Multi-Agent AI with Ease.</h2>
-                <p>
-                    konf.dev is crafting a platform to empower developers to design, connect, and manage sophisticated AI agents without wrestling with complex infrastructure. Imagine creating powerful AI workflows as intuitively as you build a flowchart.
-                </p>
-            </div>
-        </section>
-
-        <section class="key-features">
-            <div class="container">
-                <h2>What we're building:</h2>
-                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;">
-                    <div class="feature-card">
-                        <h3>Declarative Agent Workflows (Sutra)</h3>
-                        <p>Define your agents' logic and interactions using simple, powerful configurations. Focus on *what* your agents should do, not *how* to wire everything up.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Intelligent Memory Management (Smrti)</h3>
-                        <p>Equip your agents with contextual awareness. A robust memory layer ensures your AI systems learn, remember, and adapt over time.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Intuitive Orchestration (Upcoming UI)</h3>
-                        <p>Visually design and deploy intricate multi-agent systems with a user-friendly interface, inspired by the simplicity of tools like n8n, but built for AI.</p>
+        <div class="wrap">
+            <section class="hero" aria-labelledby="hero-title">
+                <div class="hero-left">
+                    <h1 id="hero-title">Build production-grade AI agents at speed</h1>
+                    <p>Config-driven workflows and visual iteration let you design, test, and deploy state-of-the-art agents faster than pure code. LLM-agnostic, prompt-tunable, and built for teams who demand quality.</p>
+                    <p><a class="btn" href="#contact">Request a demo</a></p>
+                </div>
+                <div class="hero-right">
+                    <div class="visual-card" aria-hidden="true">
+                        <!-- simple SVG illustrating agents connecting to tools -->
+                        <svg width="320" height="180" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visual: agents connecting to tools">
+                            <defs>
+                                <linearGradient id="g" x1="0" x2="1">
+                                    <stop offset="0" stop-color="#e8eefc"/>
+                                    <stop offset="1" stop-color="#f6fbff"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="0" y="0" width="320" height="180" rx="8" fill="url(#g)"/>
+                            <circle cx="70" cy="60" r="18" fill="#fff" stroke="#cbd5e1"/>
+                            <circle cx="150" cy="40" r="14" fill="#fff" stroke="#cbd5e1"/>
+                            <circle cx="230" cy="60" r="18" fill="#fff" stroke="#cbd5e1"/>
+                            <rect x="120" y="110" width="80" height="28" rx="6" fill="#fff" stroke="#cbd5e1"/>
+                            <path d="M88 62 C118 52,132 48,158 40" stroke="#94a3b8" stroke-width="2" fill="none"/>
+                            <path d="M162 46 C190 58,206 62,232 64" stroke="#94a3b8" stroke-width="2" fill="none"/>
+                            <path d="M148 54 C160 78,140 100,160 116" stroke="#94a3b8" stroke-width="2" fill="none"/>
+                        </svg>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="cta-section">
-            <div class="container">
-                <h2>Join us in shaping the future of AI.</h2>
-                <p>
-                    We're in the early stages and eager to connect with developers, researchers, and pioneers who share our vision. Your insights can help us build exactly what the community needs.
-                </p>
-                <a href="mailto:hello@konf.dev?subject=Konf.dev Inquiry" class="cta-button">Get in Touch</a>
+            <section aria-labelledby="features" style="margin-top:1.25rem">
+                <h2 id="features">Platform highlights</h2>
+                <p style="color:var(--muted);max-width:68ch">Build powerful agents without sacrificing quality — visual authoring, rapid prompt iteration, secure execution, and full observability to take agents from prototype to production.</p>
+
+                <div class="grid" style="margin-top:1rem">
+                    <div class="card">
+                        <h3>Dynamic agent generation</h3>
+                        <p>Generate agents from LLM-friendly config files and visualize them in the UI for human-in-the-loop refinement and rapid iteration.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Iterate with control</h3>
+                        <p>Design high-quality agents quickly — visual authoring plus prompt engineering tools let teams iterate safely and maintain engineering-grade quality.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Security & sandboxing</h3>
+                        <p>Typed tool contracts, sandboxed templating, and runtime isolation protect your data and systems while enabling powerful integrations.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Traceability & cost controls</h3>
+                        <p>Per-run telemetry, token accounting, and timing metrics help you optimize prompts, routing, and provider selection for cost and performance.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Integrations & adapters</h3>
+                        <p>Plug any tool or MCP server via our adapter registry. In-house deep integrations and certified adapters are on the roadmap.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Stateful memory</h3>
+                        <p>Hierarchical memory with provenance, adaptive token budgeting, and lifecycle controls provides reliable context across sessions.</p>
+                    </div>
                 </div>
-        </section>
+
+            </section>
+
+            <hr class="sep" aria-hidden="true">
+
+            <section aria-labelledby="principles">
+                <h2 id="principles">Architectural principles</h2>
+                <p style="color:var(--muted);max-width:68ch">Principles: modular components with typed contracts, declarative authoring and deterministic execution, security-first sandboxing, end-to-end observability and provenance, and adapter-driven integrations.</p>
+                <p style="margin:.6rem 0 1.1rem;font-size:.9rem;color:var(--muted)">Read the extended overview in the <a href="architecture.html" style="color:inherit;text-decoration:underline">Architecture doc</a>.</p>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Dependency injection</h3>
+                        <p>LLM providers, tool registries, and persistence backends are injected at runtime to enable modularity, testing, and provider swaps without changes to business logic.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Protocol-based interfaces</h3>
+                        <p>Minimal Python Protocols define explicit contracts for core components. Adapters map external implementations to these protocols for compatibility and flexibility.</p>
+                    </div>
+                    <div class="card">
+                        <h3>State isolation</h3>
+                        <p>Executors are stateless and safe for multi-tenant concurrent operation. All persistent state is externalized to pluggable backends for scalability.</p>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="sep" aria-hidden="true">
+
+            <section aria-labelledby="references">
+                <h2 id="references">Reference implementations</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>AspireAI</h3>
+                        <p>Goal-setting and task management chatbot built on sutra + smrti. Multi-agent triage with declarative specialist agents and a FastAPI backend.</p>
+                        <p style="margin-top:.5rem"><a class="badge" href="https://aspire-ai.org" target="_blank" rel="noopener">aspire-ai.org</a></p>
+                    </div>
+
+                    <div class="card">
+                        <h3>No Offence (game)</h3>
+                        <p>A social simulation using sutra-orchestrated agents with smrti-driven personalities. Game prototype; early development.</p>
+                        <p style="margin-top:.5rem;color:var(--muted);font-size:.9rem">*Prototype</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Documentation</h3>
+                        <p>Product documentation, API references, and implementation guides are available to customers and partners.</p>
+                        <p style="margin-top:.5rem"><a class="badge" href="#" rel="noopener">Docs (customer access)</a></p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="contact" aria-labelledby="contact">
+                <h2 id="contact">Collaborate</h2>
+                <p>We're available for technical discussions, consulting, and partnerships. Whether you're evaluating agent infrastructure or planning integrations, let's connect.</p>
+                <a class="btn" href="mailto:contact@konf.dev?subject=Konf.dev%20Inquiry">contact@konf.dev</a>
+            </section>
+            
+            <section aria-labelledby="how-it-works" style="margin-top:2.5rem">
+                <h2 id="how-it-works">How it works</h2>
+                <p style="color:var(--muted);max-width:68ch">konf.dev is a browser-first platform that makes agent development visual, composable, and production-ready. Behind the UI sits a modular orchestration stack that handles execution, context, and integrations so teams can focus on building product features.</p>
+
+                <div class="grid" style="margin-top:1rem">
+                    <div class="card">
+                        <h3>sutra — Workflow execution</h3>
+                        <p>Reliable, declarative workflow engine that compiles visual flows into executable graphs. Ensures deterministic routing, retries, and observability for production agents.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>smrti — Stateful memory</h3>
+                        <p>Hierarchical memory manager providing short-term working memory, semantic vector storage, and long-term episodic persistence. Enables agents to maintain context across interactions.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>astra — Tool integration</h3>
+                        <p>Adapter-driven tool registry that exposes APIs and third-party services as pluggable components. Makes integrations secure, testable, and hot-swappable.</p>
+                    </div>
+                </div>
+
+                <p style="color:var(--muted);margin-top:1rem;max-width:68ch">These internal engines are intentionally modular: they let konf.dev offer a no-code UX while giving engineering teams extensibility and operational guarantees. Mentioned here for technical readers and partners; full architecture details are available on request.</p>
+            </section>
+        </div>
     </main>
 
     <footer>
-        <div class="container">
-            <p>&copy; <span id="year"></span> konf.dev. All rights reserved.</p>
+        <div class="wrap">
+            <p>&copy; <span id="year">2025</span> konf.dev · All rights reserved</p>
         </div>
     </footer>
 
     <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
+        // Keep footer year current
+        try { document.getElementById('year').textContent = new Date().getFullYear(); } catch(e){}
     </script>
 </body>
 </html>
