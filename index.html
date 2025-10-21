@@ -3,268 +3,629 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>konf.dev — Agent orchestration infrastructure</title>
-    <meta name="description" content="Platform infrastructure for building declarative agent workflows, stateful memory systems, and tool orchestration. Built for production multi-agent systems.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Konf Platform — Declarative Multi-Agent Orchestration for Scalable Stochastic Systems</title>
+    <meta name="description" content="A modular platform for orchestrating multi-agent AI systems with declarative workflows, hierarchical memory, and adaptive reasoning patterns. Research project for PhD/Masters thesis.">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="logo-crop.png">
     <style>
-        :root{
+        :root {
             --bg: #ffffff;
-            --bg-soft: #f8f9fb;
-            --text: #0f1720;
-            --muted: #6b7280;
-            --accent: #0f1720;
-            --border: #e6e9ee;
-            --gap: 1rem;
-            --container: 1100px;
+            --text: #1a1a1a;
+            --muted: #666666;
+            --border: #d0d0d0;
+            --code-bg: #f5f5f5;
+            --accent: #0066cc;
         }
-
-        *{box-sizing: border-box}
-        html,body{height:100%}
-        body{
-            margin:0;
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, "Helvetica Neue", Arial;
-            color:var(--text);
-            background:var(--bg);
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-            line-height:1.5;
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            font-family: 'IBM Plex Sans', -apple-system, system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+            font-size: 16px;
         }
-
-        .wrap{max-width:var(--container);margin:0 auto;padding:0 1.25rem}
-
-        header{padding:2.25rem 0;border-bottom:1px solid var(--border);background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent)}
-        .brand{display:flex;align-items:center;gap:1rem}
-    .logo{width:auto;height:auto;flex:0 0 auto;display:inline-block}
-    .logo-main{height:192px;width:auto;display:block}
-    .brand{display:flex;align-items:center;gap:1.25rem}
-        .brand h1{font-size:1.25rem;margin:0;font-weight:600}
-    /* accessibility utility */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-        .lead{margin-top:0.5rem;color:var(--muted);max-width:68ch;font-size:1rem}
-
-        main{padding:2.5rem 0}
-    /* hero */
-    .hero{display:flex;align-items:center;gap:2rem;padding:1.5rem 0}
-    .hero-left{flex:1}
-    .hero-right{flex:0 0 360px;text-align:center}
-    .hero h1{font-size:1.8rem;margin:0 0 .5rem 0}
-    .hero p{color:var(--muted);margin:0 0 1rem}
-    .visual-card{background:#fff;border:1px solid var(--border);padding:1rem;border-radius:10px;display:inline-block}
-        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem}
-        .card{background:var(--bg-soft);border:1px solid var(--border);padding:1.15rem;border-radius:8px}
-        .card h3{margin:0 0 .5rem 0;font-size:1rem}
-        .card p{margin:0;color:var(--muted);font-size:.95rem}
-        .code{display:inline-block;margin-top:.6rem;padding:.25rem .5rem;background:#fff;border:1px solid var(--border);border-radius:6px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;font-size:.875rem;color:var(--text)}
-        .badges{margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.5rem}
-        .badge{padding:.28rem .6rem;border-radius:999px;background:#fff;border:1px solid var(--border);font-size:.82rem;color:var(--muted)}
-
-        .status{margin-top:1rem;padding:1rem;border-radius:8px;background:#fff;border:1px solid var(--border)}
-        .status ul{margin:0;padding-left:1.25rem;color:var(--muted)}
-
-        h2{font-size:1.05rem;margin:0 0 .85rem 0}
-        hr.sep{border:0;height:1px;background:var(--border);margin:2.25rem 0}
-
-        .contact{padding:1.5rem 0;text-align:center}
-        .contact p{color:var(--muted);max-width:64ch;margin:0 auto 1rem}
-        .btn{display:inline-block;padding:.65rem 1rem;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-weight:600}
-
-        footer{border-top:1px solid var(--border);padding:1rem 0;text-align:center;color:var(--muted);font-size:.88rem}
-
-        @media (max-width:720px){
-            .wrap{padding:0 1rem}
-            header{padding:1.5rem 0}
-            .brand{gap:.6rem;flex-direction:column;align-items:flex-start}
-            .logo-main{height:80px}
-            .lead{font-size:.9rem;margin-top:.35rem}
-            main{padding:1.75rem 0}
-            .hero{flex-direction:column;gap:1.5rem;padding:1rem 0}
-            .hero-right{flex:0 0 auto;width:100%;max-width:280px}
-            .hero h1{font-size:1.5rem;line-height:1.25}
-            .hero p{font-size:.92rem}
-            .grid{grid-template-columns:1fr;gap:1rem}
-            .card{padding:1rem}
-            .card h3{font-size:.98rem}
-            .card p{font-size:.9rem}
-            h2{font-size:1rem}
-            hr.sep{margin:1.75rem 0}
-            .contact{padding:1.25rem 0}
-            .btn{padding:.6rem .9rem;font-size:.92rem}
+        
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        header {
+            border-bottom: 2px solid var(--border);
+            padding: 2rem 0 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        header h1 {
+            font-size: 1.75rem;
+            margin: 0 0 0.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        
+        header .subtitle {
+            color: var(--muted);
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        h2 {
+            font-size: 1.4rem;
+            margin: 3rem 0 1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            font-size: 1.1rem;
+            margin: 2rem 0 0.75rem;
+            font-weight: 600;
+        }
+        
+        p {
+            margin: 1rem 0;
+        }
+        
+        .abstract {
+            background: var(--code-bg);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .abstract strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .diagram {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+        
+        pre {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin: 0;
+            white-space: pre;
+        }
+        
+        .code-example {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        
+        .code-example pre {
+            margin: 0;
+        }
+        
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .component-card {
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+        }
+        
+        .component-card h3 {
+            margin: 0 0 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .component-card p {
+            margin: 0.5rem 0 0;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 0 1rem; }
+            header h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.25rem; }
+            .diagram, .code-example { padding: 1rem; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="wrap">
-            <div class="brand" role="banner">
-                <a href="/" class="logo" aria-label="konf.dev home">
-                    <img src="logo.png" alt="konf.dev" class="logo-main">
-                </a>
-                <div>
-                    <h1 class="sr-only">konf.dev</h1>
-                    <p class="lead">konf.dev provides a platform to build and operate declarative agent workflows, stateful memory systems, and robust tool orchestration — built for production.</p>
+    <div class="container">
+        <header>
+            <h1>Konf Platform: Declarative Multi-Agent Orchestration for Scalable Stochastic Systems</h1>
+            <p class="subtitle">Research project investigating composable architectures for coordinating autonomous agents across distributed, non-deterministic workflows</p>
+        </header>
+
+        <main>
+            <section class="abstract">
+                <strong>Abstract</strong>
+                <p>
+                    The Konf platform addresses fundamental challenges in orchestrating multi-agent AI systems at scale: handling stochastic processes, maintaining contextual memory across interactions, and composing complex workflows declaratively. This work presents a modular architecture consisting of three core components—Sutra (workflow orchestration), Smrti (hierarchical memory), and a tool integration layer—designed to enable scalable, maintainable, and observable multi-agent systems. The platform demonstrates applicability beyond agentic AI, extending to domains such as federated learning, robotics coordination, and distributed stochastic process management.
+                </p>
+            </section>
+
+            <h2>1. System Architecture Overview</h2>
+            
+            <p>
+                The Konf platform adopts a layered architecture where each component addresses a specific aspect of multi-agent coordination:
+            </p>
+
+            <div class="diagram">
+<pre>
+┌─────────────────────────────────────────────────────────────────┐
+│                        APPLICATION LAYER                        │
+│              (Multi-Agent Workflows, Use Cases)                 │
+└─────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     ORCHESTRATION LAYER                         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐ │
+│  │    SUTRA     │  │    SMRTI     │  │   TOOL REGISTRY      │ │
+│  │  Workflow    │  │  Hierarchical│  │   (konf-tools)       │ │
+│  │  Engine      │  │  Memory      │  │                      │ │
+│  └──────────────┘  └──────────────┘  └──────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     INFRASTRUCTURE LAYER                        │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐ │
+│  │  LLM         │  │  Vector      │  │   External APIs      │ │
+│  │  Providers   │  │  Databases   │  │   & Services         │ │
+│  └──────────────┘  └──────────────┘  └──────────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+</pre>
+            </div>
+
+            <h3>1.1 Design Principles</h3>
+            <ul>
+                <li><strong>Declarative Specification:</strong> Workflows defined in YAML, enabling version control, composition, and runtime validation</li>
+                <li><strong>Provider Agnosticism:</strong> Abstraction layer allows swapping LLM providers, memory backends, and tools without workflow changes</li>
+                <li><strong>Type Safety:</strong> JSON Schema-based validation catches errors at specification time rather than runtime</li>
+                <li><strong>Observability:</strong> Built-in tracing and metrics for debugging complex multi-agent interactions</li>
+                <li><strong>Modularity:</strong> Components operate independently, enabling incremental adoption and testing</li>
+            </ul>
+
+            <h2>2. Component Architecture</h2>
+
+            <h3>2.1 Sutra: Declarative Workflow Orchestration</h3>
+            
+            <p>
+                Sutra provides a graph-based execution engine for multi-agent workflows. Agents are specified as directed acyclic graphs (DAGs) with support for cycles, conditional routing, and parallel execution.
+            </p>
+
+            <div class="code-example">
+<pre>
+# Example: Research Agent with ReAct Pattern
+name: research_agent
+version: "1.0"
+format: advanced
+entry: analyze_query
+
+llm_profiles:
+  default:
+    model: openai/gpt-4
+    temperature: 0.7
+    timeout: 60
+
+nodes:
+  - id: analyze_query
+    type: llm
+    profile: default
+    prompt: |
+      Query: {{ input }}
+      
+      What information do we need to answer this?
+      List specific search queries.
+    edges:
+      - target: search_web
+
+  - id: search_web
+    type: tool
+    tool: web_search
+    args:
+      query: "{{ analyze_query }}"
+    edges:
+      - target: synthesize
+
+  - id: synthesize
+    type: llm
+    profile: default
+    prompt: |
+      Original query: {{ input }}
+      Search results: {{ search_web }}
+      
+      Synthesize a comprehensive answer.
+    edges:
+      - target: END
+</pre>
+            </div>
+
+            <p><strong>Key Features:</strong></p>
+            <ul>
+                <li>Support for sequential, parallel, and conditional execution patterns</li>
+                <li>Built-in reasoning patterns: ReAct, Chain-of-Thought, Tree-of-Thoughts</li>
+                <li>Dynamic agent composition at runtime</li>
+                <li>Retry logic, timeout handling, and error recovery</li>
+                <li>LangGraph compilation for execution</li>
+            </ul>
+
+            <h3>2.2 Smrti: Hierarchical Memory System</h3>
+            
+            <p>
+                Smrti implements a multi-tier memory architecture inspired by cognitive science, providing working memory, semantic storage, and long-term episodic persistence.
+            </p>
+
+            <div class="diagram">
+<pre>
+Memory Tier Hierarchy:
+
+┌──────────────────────────────────────────────────────────────┐
+│  WORKING MEMORY (Context Window)                             │
+│  - Current conversation state                                │
+│  - Immediate context (last N turns)                          │
+│  - TTL: Session duration                                     │
+└──────────────────────────────────────────────────────────────┘
+                            ▼
+┌──────────────────────────────────────────────────────────────┐
+│  SHORT-TERM MEMORY (Recent Context)                          │
+│  - Recent interactions (hours to days)                       │
+│  - Summarized conversation history                           │
+│  - TTL: 24-72 hours                                          │
+└──────────────────────────────────────────────────────────────┘
+                            ▼
+┌──────────────────────────────────────────────────────────────┐
+│  EPISODIC MEMORY (Event Sequences)                           │
+│  - Structured event logs                                     │
+│  - Agent action histories                                    │
+│  - TTL: 7-30 days                                            │
+└──────────────────────────────────────────────────────────────┘
+                            ▼
+┌──────────────────────────────────────────────────────────────┐
+│  SEMANTIC MEMORY (Knowledge Graph)                           │
+│  - Entity relationships                                      │
+│  - Factual knowledge                                         │
+│  - TTL: Permanent with decay                                 │
+└──────────────────────────────────────────────────────────────┘
+                            ▼
+┌──────────────────────────────────────────────────────────────┐
+│  LONG-TERM MEMORY (Vector Embeddings)                        │
+│  - Semantic similarity search                                │
+│  - Document chunks                                           │
+│  - TTL: Permanent                                            │
+└──────────────────────────────────────────────────────────────┘
+</pre>
+            </div>
+
+            <p><strong>Memory Operations:</strong></p>
+            <div class="code-example">
+<pre>
+# Storing in appropriate tier
+- id: store_insight
+  type: memory
+  operation: store
+  tier: SEMANTIC
+  data:
+    entities: ["{{ extracted_entities }}"]
+    relationships: ["{{ extracted_relations }}"]
+    timestamp: "{{ now }}"
+
+# Retrieving with hybrid search
+- id: retrieve_context
+  type: memory
+  operation: retrieve
+  tier: LONG_TERM
+  query: "{{ user_query }}"
+  strategy: hybrid  # keyword + vector similarity
+  limit: 5
+</pre>
+            </div>
+
+            <h3>2.3 Tool Integration Layer</h3>
+            
+            <p>
+                The tool registry provides a unified interface for external service integration with type safety and sandboxed execution.
+            </p>
+
+            <div class="component-grid">
+                <div class="component-card">
+                    <h3>Tool Registry</h3>
+                    <p>Dynamic discovery and registration of tools with JSON Schema validation</p>
+                </div>
+                <div class="component-card">
+                    <h3>Adapter Pattern</h3>
+                    <p>Uniform interface for APIs, databases, and external services</p>
+                </div>
+                <div class="component-card">
+                    <h3>Sandboxing</h3>
+                    <p>Jinja2-based templating with restricted evaluation context</p>
                 </div>
             </div>
-        </div>
-    </header>
 
-    <main>
-        <div class="wrap">
-            <section class="hero" aria-labelledby="hero-title">
-                <div class="hero-left">
-                    <h1 id="hero-title">Build production-grade AI agents at speed</h1>
-                    <p>Config-driven workflows and visual iteration let you design, test, and deploy state-of-the-art agents faster than pure code. LLM-agnostic, prompt-tunable, and built for teams who demand quality.</p>
-                    <p><a class="btn" href="#contact">Request a demo</a></p>
-                </div>
-                <div class="hero-right">
-                    <div class="visual-card" aria-hidden="true">
-                        <!-- simple SVG illustrating agents connecting to tools -->
-                        <svg width="320" height="180" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visual: agents connecting to tools">
-                            <defs>
-                                <linearGradient id="g" x1="0" x2="1">
-                                    <stop offset="0" stop-color="#e8eefc"/>
-                                    <stop offset="1" stop-color="#f6fbff"/>
-                                </linearGradient>
-                            </defs>
-                            <rect x="0" y="0" width="320" height="180" rx="8" fill="url(#g)"/>
-                            <circle cx="70" cy="60" r="18" fill="#fff" stroke="#cbd5e1"/>
-                            <circle cx="150" cy="40" r="14" fill="#fff" stroke="#cbd5e1"/>
-                            <circle cx="230" cy="60" r="18" fill="#fff" stroke="#cbd5e1"/>
-                            <rect x="120" y="110" width="80" height="28" rx="6" fill="#fff" stroke="#cbd5e1"/>
-                            <path d="M88 62 C118 52,132 48,158 40" stroke="#94a3b8" stroke-width="2" fill="none"/>
-                            <path d="M162 46 C190 58,206 62,232 64" stroke="#94a3b8" stroke-width="2" fill="none"/>
-                            <path d="M148 54 C160 78,140 100,160 116" stroke="#94a3b8" stroke-width="2" fill="none"/>
-                        </svg>
-                    </div>
-                </div>
-            </section>
+            <h2>3. Advanced Orchestration Patterns</h2>
 
-            <section aria-labelledby="features" style="margin-top:1.25rem">
-                <h2 id="features">Platform highlights</h2>
-                <p style="color:var(--muted);max-width:68ch">Build powerful agents without sacrificing quality — visual authoring, rapid prompt iteration, secure execution, and full observability to take agents from prototype to production.</p>
-
-                <div class="grid" style="margin-top:1rem">
-                    <div class="card">
-                        <h3>Dynamic agent generation</h3>
-                        <p>Generate agents from LLM-friendly config files and visualize them in the UI for human-in-the-loop refinement and rapid iteration.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3>Iterate with control</h3>
-                        <p>Design high-quality agents quickly — visual authoring plus prompt engineering tools let teams iterate safely and maintain engineering-grade quality.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3>Security & sandboxing</h3>
-                        <p>Typed tool contracts, sandboxed templating, and runtime isolation protect your data and systems while enabling powerful integrations.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3>Traceability & cost controls</h3>
-                        <p>Per-run telemetry, token accounting, and timing metrics help you optimize prompts, routing, and provider selection for cost and performance.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3>Integrations & adapters</h3>
-                        <p>Plug any tool or MCP server via our adapter registry. In-house deep integrations and certified adapters are on the roadmap.</p>
-                    </div>
-
-                    <div class="card">
-                        <h3>Stateful memory</h3>
-                        <p>Hierarchical memory with provenance, adaptive token budgeting, and lifecycle controls provides reliable context across sessions.</p>
-                    </div>
-                </div>
-
-            </section>
-
-            <hr class="sep" aria-hidden="true">
-
-            <section aria-labelledby="principles">
-                <h2 id="principles">Architectural principles</h2>
-                <p style="color:var(--muted);max-width:68ch">Principles: modular components with typed contracts, declarative authoring and deterministic execution, security-first sandboxing, end-to-end observability and provenance, and adapter-driven integrations.</p>
-                <p style="margin:.6rem 0 1.1rem;font-size:.9rem;color:var(--muted)">Read the extended overview in the <a href="architecture.html" style="color:inherit;text-decoration:underline">Architecture doc</a>.</p>
-                <div class="grid">
-                    <div class="card">
-                        <h3>Dependency injection</h3>
-                        <p>LLM providers, tool registries, and persistence backends are injected at runtime to enable modularity, testing, and provider swaps without changes to business logic.</p>
-                    </div>
-                    <div class="card">
-                        <h3>Protocol-based interfaces</h3>
-                        <p>Minimal Python Protocols define explicit contracts for core components. Adapters map external implementations to these protocols for compatibility and flexibility.</p>
-                    </div>
-                    <div class="card">
-                        <h3>State isolation</h3>
-                        <p>Executors are stateless and safe for multi-tenant concurrent operation. All persistent state is externalized to pluggable backends for scalability.</p>
-                    </div>
-                </div>
-            </section>
-
-            <hr class="sep" aria-hidden="true">
-
-            <section aria-labelledby="references">
-                <h2 id="references">Reference implementations</h2>
-                <div class="grid">
-                    <div class="card">
-                        <h3>AspireAI</h3>
-                        <p>Goal-setting and task management chatbot built on sutra + smrti. Multi-agent triage with declarative specialist agents and a FastAPI backend.</p>
-                        <p style="margin-top:.5rem"><a class="badge" href="https://aspire-ai.org" target="_blank" rel="noopener">aspire-ai.org</a></p>
-                    </div>
-
-                    <div class="card">
-                        <h3>No Offence (game)</h3>
-                        <p>A social simulation using sutra-orchestrated agents with smrti-driven personalities. Game prototype; early development.</p>
-                        <p style="margin-top:.5rem;color:var(--muted);font-size:.9rem">*Prototype</p>
-                    </div>
-
-                    <div class="card">
-                        <h3>Documentation</h3>
-                        <p>Product documentation, API references, and implementation guides are available to customers and partners.</p>
-                        <p style="margin-top:.5rem"><a class="badge" href="#" rel="noopener">Docs (customer access)</a></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="contact" aria-labelledby="contact">
-                <h2 id="contact">Collaborate</h2>
-                <p>We're available for technical discussions, consulting, and partnerships. Whether you're evaluating agent infrastructure or planning integrations, let's connect.</p>
-                <a class="btn" href="mailto:contact@konf.dev?subject=Konf.dev%20Inquiry">contact@konf.dev</a>
-            </section>
+            <h3>3.1 Multi-Agent Coordination</h3>
             
-            <section aria-labelledby="how-it-works" style="margin-top:2.5rem">
-                <h2 id="how-it-works">How it works</h2>
-                <p style="color:var(--muted);max-width:68ch">konf.dev is a browser-first platform that makes agent development visual, composable, and production-ready. Behind the UI sits a modular orchestration stack that handles execution, context, and integrations so teams can focus on building product features.</p>
+            <p>
+                Sutra enables complex multi-agent systems through declarative composition. Agents can be nested as tools, enabling hierarchical delegation:
+            </p>
 
-                <div class="grid" style="margin-top:1rem">
-                    <div class="card">
-                        <h3>sutra — Workflow execution</h3>
-                        <p>Reliable, declarative workflow engine that compiles visual flows into executable graphs. Ensures deterministic routing, retries, and observability for production agents.</p>
-                    </div>
+            <div class="code-example">
+<pre>
+# Coordinator agent delegates to specialists
+nodes:
+  - id: classify_request
+    type: llm
+    prompt: |
+      Request: {{ input }}
+      
+      Which specialist should handle this?
+      - research_agent: information gathering
+      - code_agent: programming tasks
+      - analysis_agent: data analysis
+    edges:
+      - target: research_specialist
+        condition: "'research' in classify_request"
+      - target: code_specialist
+        condition: "'code' in classify_request"
 
-                    <div class="card">
-                        <h3>smrti — Stateful memory</h3>
-                        <p>Hierarchical memory manager providing short-term working memory, semantic vector storage, and long-term episodic persistence. Enables agents to maintain context across interactions.</p>
-                    </div>
+  - id: research_specialist
+    type: tool
+    tool: agents:research_agent
+    args:
+      input: "{{ input }}"
+    edges:
+      - target: synthesize_results
 
-                    <div class="card">
-                        <h3>astra — Tool integration</h3>
-                        <p>Adapter-driven tool registry that exposes APIs and third-party services as pluggable components. Makes integrations secure, testable, and hot-swappable.</p>
-                    </div>
+  - id: code_specialist
+    type: tool
+    tool: agents:code_agent
+    args:
+      input: "{{ input }}"
+    edges:
+      - target: synthesize_results
+</pre>
+            </div>
+
+            <h3>3.2 Reasoning Patterns</h3>
+            
+            <p>
+                The platform implements several reasoning patterns as composable node types:
+            </p>
+
+            <ul>
+                <li><strong>ReAct (Reason + Act):</strong> Iterative reasoning with tool usage and reflection</li>
+                <li><strong>Chain-of-Thought:</strong> Multi-step decomposition of complex problems</li>
+                <li><strong>Tree-of-Thoughts:</strong> Parallel exploration of solution paths with evaluation</li>
+                <li><strong>Self-Critique:</strong> Iterative refinement through self-evaluation</li>
+            </ul>
+
+            <div class="code-example">
+<pre>
+# Tree-of-Thoughts example
+- id: explore_solutions
+  type: tree_of_thoughts
+  branches: 3
+  depth: 2
+  prompt: "Generate solution approaches for: {{ problem }}"
+  evaluation_prompt: |
+    Rate this solution 1-10:
+    Solution: {{ solution }}
+    Criteria: feasibility, cost, time
+  selection_strategy: best
+  edges:
+    - target: implement_solution
+</pre>
+            </div>
+
+            <h2>4. Research Contributions and Vision</h2>
+
+            <h3>4.1 Problem Statement</h3>
+            <p>
+                Current multi-agent frameworks face several limitations:
+            </p>
+            <ul>
+                <li>Lack of type safety leads to runtime failures in production</li>
+                <li>No standardized memory hierarchy for context management</li>
+                <li>Limited composability of reasoning patterns</li>
+                <li>Insufficient observability for debugging complex agent interactions</li>
+                <li>Tight coupling between orchestration logic and infrastructure</li>
+            </ul>
+
+            <h3>4.2 Proposed Solutions</h3>
+            <p>
+                The Konf platform addresses these challenges through:
+            </p>
+
+            <ol>
+                <li><strong>Static Analysis:</strong> YAML validation with JSON Schema catches errors before deployment</li>
+                <li><strong>Memory Abstraction:</strong> Hierarchical memory tiers with automatic consolidation policies</li>
+                <li><strong>Declarative Composition:</strong> Node types as composable building blocks</li>
+                <li><strong>Tracing Integration:</strong> Built-in observability with LangFuse/Langsmith</li>
+                <li><strong>Provider Abstraction:</strong> Dependency injection enables testing and provider swapping</li>
+            </ol>
+
+            <h3>4.3 Beyond Agentic AI</h3>
+            <p>
+                The declarative orchestration model extends to other domains requiring coordination of stochastic processes:
+            </p>
+
+            <div class="component-grid">
+                <div class="component-card">
+                    <h3>Federated Learning</h3>
+                    <p>Coordinate distributed model training across edge devices with heterogeneous hardware and unreliable networks</p>
                 </div>
+                <div class="component-card">
+                    <h3>Robot Fleet Management</h3>
+                    <p>Orchestrate warehouse robots with collision avoidance, task allocation, and failure recovery</p>
+                </div>
+                <div class="component-card">
+                    <h3>Clinical Trial Coordination</h3>
+                    <p>Manage multi-site trials with protocol adherence, adverse event monitoring, and adaptive protocols</p>
+                </div>
+                <div class="component-card">
+                    <h3>Smart Manufacturing</h3>
+                    <p>Predictive maintenance, quality control, and supply chain optimization with real-time adaptation</p>
+                </div>
+            </div>
 
-                <p style="color:var(--muted);margin-top:1rem;max-width:68ch">These internal engines are intentionally modular: they let konf.dev offer a no-code UX while giving engineering teams extensibility and operational guarantees. Mentioned here for technical readers and partners; full architecture details are available on request.</p>
-            </section>
-        </div>
-    </main>
+            <h2>5. Implementation Status</h2>
 
-    <footer>
-        <div class="wrap">
-            <p>&copy; <span id="year">2025</span> konf.dev · All rights reserved</p>
-        </div>
-    </footer>
+            <div class="diagram">
+<pre>
+Component Status (October 2025):
 
-    <script>
-        // Keep footer year current
-        try { document.getElementById('year').textContent = new Date().getFullYear(); } catch(e){}
-    </script>
+Sutra (Orchestration)    ████████████████████ 100% ✅
+├─ YAML specification    Complete
+├─ Graph execution       Complete
+├─ LLM adapters          Complete (OpenAI, Anthropic, Gemini)
+├─ Tool integration      Complete
+└─ Tracing              Complete
+
+Smrti (Memory)           ███████████████░░░░░  75% 🚧
+├─ Tier architecture     Complete
+├─ Vector storage        Complete
+├─ Consolidation logic   In progress
+└─ Query optimization    Planned
+
+Tool Integration         ████████████████░░░░  80% 🚧
+├─ Registry system       Complete
+├─ Basic tools          Complete
+├─ MCP integration      In progress
+└─ Sandboxing           Planned
+
+Gateway (API)            ███████████░░░░░░░░░  55% 🚧
+├─ Session management    Complete
+├─ Multi-tenancy        In progress
+├─ Rate limiting        Planned
+└─ Deployment tools     Planned
+</pre>
+            </div>
+
+            <h2>6. Future Research Directions</h2>
+
+            <h3>6.1 Static Analysis Engine</h3>
+            <p>
+                Develop compile-time validation for agent specifications, including:
+            </p>
+            <ul>
+                <li>Type checking between node inputs/outputs</li>
+                <li>Variable resolution and scope analysis</li>
+                <li>Reachability analysis for detecting unreachable nodes</li>
+                <li>Cycle detection with stop condition validation</li>
+                <li>Performance analysis and optimization suggestions</li>
+            </ul>
+
+            <h3>6.2 Vak Language</h3>
+            <p>
+                Development of a domain-specific language for agent workflows (~70% complete) that provides:
+            </p>
+            <ul>
+                <li>True compile-time type safety</li>
+                <li>Native protocol definitions for multi-agent contracts</li>
+                <li>First-class memory operations</li>
+                <li>Semantic type system for agent capabilities</li>
+            </ul>
+
+            <h3>6.3 Formal Verification</h3>
+            <p>
+                Investigate formal methods for verifying agent properties:
+            </p>
+            <ul>
+                <li>Termination guarantees for iterative reasoning patterns</li>
+                <li>Safety properties for tool execution</li>
+                <li>Liveness properties for multi-agent protocols</li>
+            </ul>
+
+            <h2>7. References and Related Work</h2>
+
+            <ul>
+                <li><strong>LangChain/LangGraph:</strong> Graph-based orchestration, lacks declarative specification</li>
+                <li><strong>AutoGPT:</strong> Autonomous agents, limited composability</li>
+                <li><strong>CrewAI:</strong> Role-based agents, no memory hierarchy</li>
+                <li><strong>Semantic Kernel:</strong> Microsoft's agent framework, tight Azure coupling</li>
+                <li><strong>DSPy:</strong> Programming framework for LLM applications, different abstraction level</li>
+            </ul>
+
+            <h2>8. Repository Structure</h2>
+
+            <div class="code-example">
+<pre>
+konf-platform/
+├── sutra/                  # Orchestration engine
+│   ├── src/sutra/
+│   │   ├── declarative/    # YAML spec parsing
+│   │   ├── executor/       # Graph execution
+│   │   ├── llm/           # Provider adapters
+│   │   └── tools/         # Tool registry
+│   └── docs/              # User guides, examples
+│
+├── smrti/                  # Memory system
+│   ├── src/
+│   │   ├── tiers/         # Memory tier implementations
+│   │   ├── consolidation/ # Memory lifecycle
+│   │   └── query/         # Retrieval strategies
+│   └── docs/
+│
+├── konf-tools/            # Tool integration
+│   ├── src/
+│   │   ├── registry/      # Tool discovery
+│   │   ├── adapters/      # External service adapters
+│   │   └── validation/    # JSON Schema validation
+│   └── docs/
+│
+├── konf-gateway/          # API gateway
+│   ├── src/
+│   │   ├── api/           # REST endpoints
+│   │   ├── session/       # Session management
+│   │   └── auth/          # Multi-tenancy
+│   └── docs/
+│
+└── ideas-and-docs/        # Research documentation
+    ├── docs/design/       # Architecture docs
+    ├── docs/research/     # Research papers
+    └── docs/examples/     # Use cases
+</pre>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>Konf Platform Research Project · October 2025</p>
+            <p>Contact: <a href="mailto:contact@konf.dev" style="color: var(--accent);">contact@konf.dev</a></p>
+        </footer>
+    </div>
 </body>
 </html>
